@@ -1,0 +1,7 @@
+name: DeathCoords
+version: 1.0.0
+description: Tells the user where he died.
+
+author: Deku
+website: http://www.github.com/Deku
+main: cl.josedev.DeathCoords.DeathCoords
