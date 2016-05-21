@@ -5,3 +5,8 @@ description: Tells the user where he died.
 author: Deku
 website: http://www.github.com/Deku
 main: cl.josedev.DeathCoords.DeathCoords
+
+commands:
+  guia:
+    description: Entrega un compas al jugador mostrando su ubicacion de muerte
+    usage: /guia
