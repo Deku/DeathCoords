@@ -55,19 +55,7 @@ public class DeathListener implements Listener {
 			
 			if (loc.distance(deathPoint) <= 5.0) {
 				plugin.lastDeath.remove(player.getUniqueId());
-				
-				// Remove guide compass
-				for (ItemStack item : player.getInventory()) {
-					if (item != null) {
-						if (item.getType().equals(Material.COMPASS)) {
-							if (item.getItemMeta().getDisplayName() == "Ubicacion de tu muerte"
-									&& item.getItemMeta().getLore().size() > 0) {
-								player.getInventory().remove(item);
-							}
-						}
-					}
-				}
-				
+				deleteCompass(player);
 				player.setCompassTarget(new Location(player.getWorld(), 0, 0, 0));
 			}
 		}
@@ -79,6 +67,22 @@ public class DeathListener implements Listener {
 		
 		if (plugin.lastDeath.containsKey(player.getUniqueId())) {
 			plugin.lastDeath.remove(player.getUniqueId());
+		}
+		
+		deleteCompass(player);
+	}
+	
+	private void deleteCompass(Player player) {
+		// Remove guide compass
+		for (ItemStack item : player.getInventory()) {
+			if (item != null) {
+				if (item.getType().equals(Material.COMPASS)) {
+					if (item.getItemMeta().getDisplayName() == "Ubicacion de tu muerte"
+							&& item.getItemMeta().getLore().size() > 0) {
+						player.getInventory().remove(item);
+					}
+				}
+			}
 		}
 	}
 }
