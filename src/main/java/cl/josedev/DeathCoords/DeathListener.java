@@ -1,6 +1,5 @@
 package cl.josedev.DeathCoords;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,7 +29,6 @@ public class DeathListener implements Listener {
 			if (player.isOnline()) {
 				Location loc = event.getEntity().getLocation();
 				plugin.lastDeath.put(player.getUniqueId(), loc);
-				Bukkit.getServer().getLogger().info("Agregado  punto de muerte");
 				String message = ">> " + player.getName()
 									+ ", moriste en: "
 									+ "[Mundo] " + loc.getWorld().getName()
