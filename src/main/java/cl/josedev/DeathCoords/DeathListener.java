@@ -48,6 +48,11 @@ public class DeathListener implements Listener {
 	public void onPlayerReachedDeathPoint(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		
+		// Bodies of dead players trigger this event when they are falling
+		if (player.isDead()) {
+			return;
+		}
+		
 		if (plugin.lastDeath.containsKey(player.getUniqueId()))
 		{
 			Location deathPoint = plugin.lastDeath.get(player.getUniqueId());
