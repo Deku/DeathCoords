@@ -1,5 +1,6 @@
 package cl.josedev.DeathCoords;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +30,7 @@ public class DeathListener implements Listener {
 			if (player.isOnline()) {
 				Location loc = event.getEntity().getLocation();
 				plugin.lastDeath.put(player.getUniqueId(), loc);
+				Bukkit.getServer().getLogger().info("Agregado  punto de muerte");
 				String message = ">> " + player.getName()
 									+ ", moriste en: "
 									+ "[Mundo] " + loc.getWorld().getName()
@@ -74,15 +76,31 @@ public class DeathListener implements Listener {
 	
 	private void deleteCompass(Player player) {
 		// Remove guide compass
-		for (ItemStack item : player.getInventory()) {
+		for (ItemStack item : player.getInventory().getContents()) {
 			if (item != null) {
-				if (item.getType().equals(Material.COMPASS)) {
-					if (item.getItemMeta().getDisplayName() == "Ubicacion de tu muerte"
-							&& item.getItemMeta().getLore().size() > 0) {
-						player.getInventory().remove(item);
-					}
+				if (isDCCompass(item)) {
+					player.getInventory().remove(item);
 				}
 			}
 		}
+		
+		// Remove from enderchest
+		for (ItemStack item : player.getEnderChest().getContents()) {
+			if (item != null) {
+				if (isDCCompass(item)) {
+					player.getEnderChest().remove(item);
+				}
+			}
+		}
+	}
+	
+	private boolean isDCCompass(ItemStack item) {
+		if (item.getType().equals(Material.COMPASS)) {
+			String name = item.getItemMeta().getDisplayName();
+			
+			return name.equals("Ubicacion de tu muerte") && item.getItemMeta().getLore().size() > 0;
+		}
+		
+		return false;
 	}
 }
