@@ -68,7 +68,7 @@ public class DeathListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	public void onPlayerDisconnect(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		
