@@ -7,7 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -75,6 +77,15 @@ public class DeathListener implements Listener {
 		}
 		
 		deleteCompass(player);
+	}
+	
+	@EventHandler(priority=EventPriority.HIGH, ignoreCancelled=true)
+	public void onItemDrop(ItemSpawnEvent event) {
+		ItemStack item = event.getEntity().getItemStack();
+		
+		if (isDCCompass(item)) {
+			event.setCancelled(true);
+		}
 	}
 	
 	private void deleteCompass(Player player) {
