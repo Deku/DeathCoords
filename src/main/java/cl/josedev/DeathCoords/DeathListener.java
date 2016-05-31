@@ -9,10 +9,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.massivecraft.factions.entity.BoardColl;
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.massivecore.ps.PS;
+
+import cl.josedev.DeathCoords.utils.UtilsFactions;
 
 
 public class DeathListener implements Listener {
@@ -29,14 +35,21 @@ public class DeathListener implements Listener {
 			Player player = event.getEntity();
 			
 			if (player.isOnline()) {
+				MPlayer mplayer = MPlayer.get(player);
 				Location loc = event.getEntity().getLocation();
-				plugin.lastDeath.put(player.getUniqueId(), loc);
-				String message = ">> " + player.getName()
-									+ ", moriste en: "
-									+ "[Mundo] " + loc.getWorld().getName()
-									+ " - [X] " + loc.getBlockX()
-									+ " - [Y] " + loc.getBlockY()
-									+ " - [Z] "+loc.getBlockZ();
+				Faction targetFaction = BoardColl.get().getFactionAt(PS.valueOf(loc));
+				String message = ">> " + player.getName() + ", moriste en: ";
+				
+				if (mplayer.getFaction().equals(targetFaction)
+						|| UtilsFactions.areFriends(mplayer.getFaction(), targetFaction)) {
+					plugin.lastDeath.put(player.getUniqueId(), loc);
+					message += "[Mundo] " + loc.getWorld().getName()
+								+ " - [X] " + loc.getBlockX()
+								+ " - [Y] " + loc.getBlockY()
+								+ " - [Z] "+loc.getBlockZ();
+				} else {
+					message += ChatColor.MAGIC + "Mundo X Y Z" + ChatColor.RESET + ChatColor.RED + " ... una faccion con la que no te llevas muy bien!";
+				}
 				
 				player.sendMessage(ChatColor.AQUA + message);
 			}
