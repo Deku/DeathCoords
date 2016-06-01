@@ -73,6 +73,8 @@ public class DeathListener implements Listener {
 			Location deathPoint = plugin.lastDeath.get(player.getUniqueId());
 			Location loc = event.getTo();
 			
+			if (!deathPoint.getWorld().equals(loc.getWorld())) { return; }
+			
 			if (loc.distance(deathPoint) <= 5.0) {
 				plugin.lastDeath.remove(player.getUniqueId());
 				deleteCompass(player);
