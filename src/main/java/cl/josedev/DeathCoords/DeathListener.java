@@ -125,9 +125,13 @@ public class DeathListener implements Listener {
 	
 	private boolean isDCCompass(ItemStack item) {
 		if (item.getType().equals(Material.COMPASS)) {
-			String name = item.getItemMeta().getDisplayName();
+			ItemMeta meta = item.getItemMeta();
 			
-			return name.equals("Ubicacion de tu muerte") && item.getItemMeta().getLore().size() > 0;
+			if (meta != null) {
+				String name = meta.getDisplayName();
+				
+				return name.equals("Ubicacion de tu muerte") && meta.getLore().size() > 0;
+			}
 		}
 		
 		return false;
